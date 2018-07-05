@@ -4,33 +4,33 @@
 ＴＤ４ｘ４ 命令一覧
 
 
----------------+---------------+--------------------------------------------------------------
-命令			ビット			動作
----------------+---------------+--------------------------------------------------------------
-計算 Ra,Rb		0000CCCC		Ra <- RaとRb間で計算  CCCCC=
-								___ ADD SUB AND OR_ ^__ MUL SR_ EQU GT  GE  LT  LE  NE  NEG NOP
-				0010CCCC		
-				00010xxx		
-LD  Rs,Rx		00m11000		m:条件=0:$18:SP -> A =1:$38:SP <- A
-LD  Rx,Rx		00m11001		m:条件=0:$19:A -> B  =1:$39:A <- B
-XAB Ra,Rb		00011010		$1A レジスタ交換 A <-> B
-				00m11xxx		
-IN/OUT			00m11111		M:条件=0:Input($1F)  =1:Output($3F)
-LD  Rx,Vx		01RVVVVV		$40+R+V Rx <- Vx  Rx=regA/B  Vx(変数)=regA/B,A-Z($1B)/%/&/*/_
-ST  Vx,Rx		10RVVVVV		$80+R+V Vx <- Rx
-				1100000m		
-RTS				1100001b		$C2+b(0)
-LDM Ra,(Ra)		1100010b		$C4+b メモリ読み出し　b:バイト数=0:1byte  =1:2byte
-LDM (Ra),Rb		1100011b		$C6+b メモリ書き込み　
-PE/PO (SP)		11001mxx		$C8+m regAと(SP+xx*2)でデータ交換　m:条件=0:Read  =1:Write
-PUSH/POP Rx		1110mxxx		$Ex m:条件=0:$E0:POP  =1:$E8:PUSH xxx=0:regA 1:regB 2-7:A-F
-JPx xxyy		1101JJJJ+xx+yy	$Dx 条件成立時ジャンプ　JJJJ=0($D0):JZ =1($D1)JNZ
-JPx xxyy		11011JJJ+xx+yy	$Dx($D6/D7/F6/F7除外) 条件ジャンプ JJJ=0:$D8:JZ 1:$D9:JNZ
-				11111xxx+xx+yy	$Fx($D6/D7/F6/F7除外)
-JSR				11011110+xx+yy	$D6/$DE
-JMP				11111110+xx+yy	$F6/$FE
-LDI Rx,xxyy		11R1b111+xx+yy	Rx <- #xxxx b:バイト数 =1:$DF/$FF(2byte) =0:$D7/$F7(1byte)
----------------+---------------+--------------------------------------------------------------
+	---------------+---------------+--------------------------------------------------------------
+	命令			ビット			動作
+	---------------+---------------+--------------------------------------------------------------
+	計算 Ra,Rb		0000CCCC		Ra <- RaとRb間で計算  CCCCC=
+									___ ADD SUB AND OR_ ^__ MUL SR_ EQU GT  GE  LT  LE  NE  NEG NOP
+					0010CCCC		
+					00010xxx		
+	LD  Rs,Rx		00m11000		m:条件=0:$18:SP -> A =1:$38:SP <- A
+	LD  Rx,Rx		00m11001		m:条件=0:$19:A -> B  =1:$39:A <- B
+	XAB Ra,Rb		00011010		$1A レジスタ交換 A <-> B
+					00m11xxx		
+	IN/OUT			00m11111		M:条件=0:Input($1F)  =1:Output($3F)
+	LD  Rx,Vx		01RVVVVV		$40+R+V Rx <- Vx  Rx=regA/B  Vx(変数)=regA/B,A-Z($1B)/%/&/*/_
+	ST  Vx,Rx		10RVVVVV		$80+R+V Vx <- Rx
+					1100000m		
+	RTS				1100001b		$C2+b(0)
+	LDM Ra,(Ra)		1100010b		$C4+b メモリ読み出し　b:バイト数=0:1byte  =1:2byte
+	LDM (Ra),Rb		1100011b		$C6+b メモリ書き込み　
+	PE/PO (SP)		11001mxx		$C8+m regAと(SP+xx*2)でデータ交換　m:条件=0:Read  =1:Write
+	PUSH/POP Rx		1110mxxx		$Ex m:条件=0:$E0:POP  =1:$E8:PUSH xxx=0:regA 1:regB 2-7:A-F
+	JPx xxyy		1101JJJJ+xx+yy	$Dx 条件成立時ジャンプ　JJJJ=0($D0):JZ =1($D1)JNZ
+	JPx xxyy		11011JJJ+xx+yy	$Dx($D6/D7/F6/F7除外) 条件ジャンプ JJJ=0:$D8:JZ 1:$D9:JNZ
+					11111xxx+xx+yy	$Fx($D6/D7/F6/F7除外)
+	JSR				11011110+xx+yy	$D6/$DE
+	JMP				11111110+xx+yy	$F6/$FE
+	LDI Rx,xxyy		11R1b111+xx+yy	Rx <- #xxxx b:バイト数 =1:$DF/$FF(2byte) =0:$D7/$F7(1byte)
+	---------------+---------------+--------------------------------------------------------------
 
 
 GAME86の文法
