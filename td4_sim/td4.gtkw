@@ -1,0 +1,53 @@
+[*]
+[*] GTKWave Analyzer v3.3.71 (w)1999-2016 BSI
+[*] Wed Jul 04 08:48:59 2018
+[*]
+[dumpfile] "D:\DATA\ìäçe\Git\VTL_on_FPGA\td4_sim\wave.vcd"
+[dumpfile_mtime] "Wed Jul 04 08:46:21 2018"
+[dumpfile_size] 3256434
+[savefile] "D:\DATA\ìäçe\Git\VTL_on_FPGA\td4_sim\td4.gtkw"
+[timestart] 0
+[size] 1556 748
+[pos] -5 54
+*-17.000000 10000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] testbench.
+[treeopen] testbench.uut.
+[sst_width] 197
+[signals_width] 166
+[sst_expanded] 1
+[sst_vpaned_height] 120
+@28
+testbench.uut.CLOCK
+testbench.uut.RESET
+@22
+testbench.uut.PCM8[11:0]
+testbench.uut.memout[7:0]
+testbench.uut.PC8[11:0]
+testbench.uut.prgout[7:0]
+testbench.uut.op_hold[7:0]
+@28
+testbench.uut.opsel[1:0]
+@24
+testbench.uut.memsel[2:0]
+@22
+testbench.uut.ramin[7:0]
+@28
+testbench.uut.setnop
+@22
+testbench.uut.MP[15:0]
+@28
+testbench.uut.mwe
+@22
+testbench.uut.\regx[0][15:0]
+testbench.uut.\regx[1][15:0]
+testbench.uut.\regx[2][15:0]
+testbench.uut.\regx[3][15:0]
+testbench.uut.\regx[4][15:0]
+testbench.uut.\rwmem[8188][7:0]
+testbench.uut.\rwmem[8189][7:0]
+testbench.uut.\rwmem[8190][7:0]
+testbench.uut.\rwmem[8191][7:0]
+testbench.uut.SP[15:0]
+testbench.uut.OUT[7:0]
+[pattern_trace] 1
+[pattern_trace] 0
