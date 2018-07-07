@@ -4,6 +4,8 @@
 
 　　　　　　　　[［その２　ＧＡＭＥ８６インタープリター］](https://qiita.com/hi631/items/156f5454ffbc22b9c909)
 
+　　　　　　　　[［その２　ＧＡＭＥ８６インタープリター］](https://qiita.com/hi631/items/156f5454ffbc22b9c909)
+
 　　　　　　　　[［その３　ＦＰＧＡ上のＶＴＬ実行環境］](https://qiita.com/hi631/items/d2c96be05d40fc41c1b7)
 
 　　　　　　　　[［その４　ＶＴＬ＿ｏｎ＿ＦＰＧＡコンパイラー](https://qiita.com/hi631/items/1c292db6fbc2e5b71855)
