@@ -95,23 +95,23 @@ always @(posedge CLOCK) begin
 				  3'b111: 
                 if(regno==0) begin             // Ra <- Input 
 						ior <= 1;
-						case(regx[1][2:0])
-							3'd0: begin
-								if(rxrdy) begin regx[0] <= {8'd0, rxdata}; srxreq  <= 1; end
-									else   begin regx[0] <= {8'd0, ps2_kb}; ps2_req <= 1; end
+						case(regx[1][7:0])
+							8'd0: begin
+								if(rxrdy) begin regx[0] <= {8'd0, rxdata}; srxreq  <= 1; end // シリアル入力
+									else   begin regx[0] <= {8'd0, ps2_kb}; ps2_req <= 1; end // PS2入力
 							end  
-							3'd1: begin regx[0] <= {15'd0, rxrdy | ps2_rdy}; end
-							3'd2: begin regx[0] <= {15'd0,txbusy}; end
-							3'd3: begin regx[0] <= {8'd0,IN[7:0]}; end
+							8'd1: begin regx[0] <= {15'd0, rxrdy | ps2_rdy}; end
+							8'd2: begin regx[0] <= {15'd0,txbusy}; end
+							8'd3: begin regx[0] <= {8'd0,IN[7:0]}; end
 							default: regx[0] <= iordt;
 						endcase
 					end else begin                       // Output <- Ra
 						OUT <= regx[0][7:0]; // Dumy OUT
 						iowdt <= regx[0]; ioad <= regx[1][7:0]; iow <= 1; // EX.Output
-						case(regx[1][2:0])
-							3'd0: begin 
-								txdata<= regx[0][7:0]; stxreq <= 1;
-								iowdt <= regx[0][7:0]; ioad <= 8'h14; iow <= 1;
+						case(regx[1][7:0])
+							8'd0: begin 
+								txdata<= regx[0][7:0]; stxreq <= 1; // シリアル出力
+								ioad <= 8'h14;         iow <= 1;    // VDTに表示 
 							end
 						endcase
 					end
@@ -289,7 +289,7 @@ end
   // Main RAM(Static R/W)
   reg  [0:0] mwe;
   reg  [7:0] ramin, ramout;
-  reg  [7:0] rwmem [0:30719-(2048+2048)]; // $77ff - textbf(2048) - CG(2048)
+  reg  [7:0] rwmem [0:30719-(2048+2048)]; // メモリ($77ff) - textbf($800) - CG($800) (- Tap($1000))
   //reg  [7:0] rwmem [0:12287]; // 3000 (EP2C5)
 
   always @(posedge CLOCK) begin
@@ -313,7 +313,7 @@ wire       txbusy,rxrdy;
 	wire ps2_rdy;
 	reg  ps2_req=0;
 	wire [7:0] ps2_kb;
-	ps2_rx ps2( .clk(CLOCK), .reset(RESET), .ps2d( ps2d), .ps2c( ps2c),
+	ps2_rx ps2( .clk(CLOCK), .reseti(RESET), .ps2d( ps2d), .ps2c( ps2c),
 			  .rx_en( 1'b1), .acd_out( ps2_kb), .acd_rdy( ps2_rdy), .acd_req(ps2_req));
 
 endmodule

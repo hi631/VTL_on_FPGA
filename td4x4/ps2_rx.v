@@ -8,10 +8,10 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module ps2_rx( clk, reset, ps2d, ps2c, rx_en, acd_out, acd_rdy, acd_req );
+module ps2_rx( clk, reseti, ps2d, ps2c, rx_en, acd_out, acd_rdy, acd_req );
 				  
 input wire clk;
-input wire reset;
+input wire reseti;
 input wire ps2d;	// data line (350u)
 input wire ps2c;	// clock line(50u/dot)
 input wire rx_en;	// enable PS2 receiver
@@ -45,7 +45,15 @@ assign acd_out = siftin==0 ? acd :
 						acd<8'h40 ? acd - 8'h10 : 
 						acd+8'h20;
 
-always@( posedge clk, posedge reset) begin
+	reg [27:0] div1msc=0;
+	(* syn_Preserv = 1 *)reg       pwon=0;
+	assign reset = reseti | ~pwon;
+	always @(posedge clk) begin // PowerON時のキーを抑制(2s)
+		if(div1msc==28'd100000000) begin pwon <= 1; end
+		else                      begin pwon <= 0; div1msc <= div1msc + 8'd1;  end
+	end
+
+	always@( posedge clk) begin
 	if(reset) acd_rdy <= 0;
 	else begin
 		if(scd_done) begin
@@ -120,7 +128,7 @@ always@( posedge clk, posedge reset) begin
 	end
 end
 
-always@( posedge clk, posedge reset )
+always@( posedge clk )
 if( reset )
 	begin
 		filter_reg <= 0;
@@ -141,7 +149,7 @@ assign f_ps2c_next  = ( filter_reg == 8'b1111_1111 ) ? 1'b1 :
 assign fall_edge = f_ps2c_reg & ~f_ps2c_next;
 
 
-always@( posedge clk, posedge reset )
+always@( posedge clk )
 	if( reset )
 		begin
 			state_reg <= idle;

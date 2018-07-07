@@ -4,7 +4,7 @@ JedecChain;
 	DefaultMfr(6E);
 
 	P ActionCode(Cfg)
-		Device PartName(EP4CE6) Path("D:/DATA/Qiita/Github/VTL_on_FPGA/td4x4/output_files/") File("output_file.jic") MfrSpec(OpMask(1) SEC_Device(EPCS4) Child_OpMask(1 1));
+		Device PartName(EP4CE6E22) Path("D:/DATA/Qiita/Github/VTL_on_FPGA/td4x4/output_files/") File("td4x4.sof") MfrSpec(OpMask(1));
 
 ChainEnd;
 

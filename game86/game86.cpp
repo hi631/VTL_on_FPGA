@@ -1,6 +1,7 @@
-﻿// game86.cpp : コンソール アプリケーションのエントリ ポイントを定義します。
-//
+﻿//
 // GAME Language interpreter ,32bit Takeoka ver. by Shozo TAKEOKA (http://www.takeoka.org/~take/ )
+// VTL_on_FPGA用に改造 By HI631
+//
 #include "stdafx.h"
 #pragma warning(disable:4996)
 #include "windows.h"
@@ -948,7 +949,7 @@ void main() {
 	set_page_init(1); set_page_init(0); texttop = (int)text_buf;
 	//VARA('A') = TOPP;
 
-	crlf(); xputs("--- GAME Interpreter ('esc' to stop, '\\' to quit) ---\n");
+	crlf(); xputs("--- VTL_on_FPGA Interpreter ---\n");
 	sp = -1;
 	
 	for (;;){
