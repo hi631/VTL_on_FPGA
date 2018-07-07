@@ -2,7 +2,7 @@
 
     			[［その１ VTLと「VTL_on_FPGA」について］](https://qiita.com/hi631/items/30b60e5ae9d50ed6cfa0)
 
-　　　　　　　　[［その２　ＧＡＭＥ８６インタープリター］](https://qiita.com/hi631/items/156f5454ffbc22b9c909)
+　　　　　　　　[［その１ VTLと「VTL_on_FPGA」について］](https://qiita.com/hi631/items/156f5454ffbc22b9c909)
 
 　　　　　　　　[［その２　ＧＡＭＥ８６インタープリター］](https://qiita.com/hi631/items/156f5454ffbc22b9c909)
 
