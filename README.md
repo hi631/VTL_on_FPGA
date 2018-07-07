@@ -1,21 +1,27 @@
 作成中
 
 	0.始めに　 ＶＴＬ＿ｏｎ＿ＦＰＧＡ[その１ VTLと「VTL_on_FPGA」について]
+
     			[［その１ VTLと「VTL_on_FPGA」について］](https://qiita.com/hi631/items/30b60e5ae9d50ed6cfa0)
 
 　　1.GAME86 　パソコン上で動作する、Ｃ言語で書かれた「GAME-III」ベースのインタープリター
+
 　　　　　　　　[［その２　ＧＡＭＥ８６インタープリター］](https://qiita.com/hi631/items/156f5454ffbc22b9c909)
 
 　　2.TD4x4  　FPGA上で動作する、verilog言語で書かれた16ビットCPU(VTL実行環境)
+
 　　　　　　　　[［その３　ＦＰＧＡ上のＶＴＬ実行環境］](https://qiita.com/hi631/items/d2c96be05d40fc41c1b7)
 
 　　3.GM80  　「GAME80」ベースのVTL言語コンパイラー
+
 　　　　　　　　[［その４　ＶＴＬ＿ｏｎ＿ＦＰＧＡコンパイラー](https://qiita.com/hi631/items/1c292db6fbc2e5b71855)
 
 　　4.拡張IO 　TD4x4に追加した、テキスト/グラフィックディスプレーとPS2キーボード
+
 　　　　　　　　[［その５　ＶＴＬ＿ｏｎ＿ＦＰＧＡの拡張ＩＯ］](https://qiita.com/hi631/items/2af8506e070a830349a7)
 
 　　5.TD4_SIM　パソコン上のFPGAシミュレーター
+
 　　　　　　　　[［その６　ＶＴＬ＿ｏｎ＿ＦＰＧＡのシミュレーション］](https://qiita.com/hi631/items/c19fe4a5f513d56b87ab)
 
 
