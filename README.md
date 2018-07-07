@@ -1,34 +1,47 @@
 作成中
 
+	0.始めに　 ＶＴＬ＿ｏｎ＿ＦＰＧＡ[その１ VTLと「VTL_on_FPGA」について]
+    			[［その１ VTLと「VTL_on_FPGA」について］](https://qiita.com/hi631/items/30b60e5ae9d50ed6cfa0)
+　　1.GAME86 　パソコン上で動作する、Ｃ言語で書かれた「GAME-III」ベースのインタープリター
+　　　　　　　　[［その２　ＧＡＭＥ８６インタープリター］](https://qiita.com/hi631/items/156f5454ffbc22b9c909)
+　　2.TD4x4  　FPGA上で動作する、verilog言語で書かれた16ビットCPU(VTL実行環境)
+　　　　　　　　[［その３　ＦＰＧＡ上のＶＴＬ実行環境］](https://qiita.com/hi631/items/d2c96be05d40fc41c1b7)
+　　3.GM80  　「GAME80」ベースのVTL言語コンパイラー
+　　　　　　　　[［その４　ＶＴＬ＿ｏｎ＿ＦＰＧＡコンパイラー](https://qiita.com/hi631/items/1c292db6fbc2e5b71855)
+　　4.拡張IO 　TD4x4に追加した、テキスト/グラフィックディスプレーとPS2キーボード
+　　　　　　　　[［その５　ＶＴＬ＿ｏｎ＿ＦＰＧＡの拡張ＩＯ］](https://qiita.com/hi631/items/2af8506e070a830349a7)
+　　5.TD4_SIM　パソコン上のFPGAシミュレーター
+　　　　　　　　[［その６　ＶＴＬ＿ｏｎ＿ＦＰＧＡのシミュレーション］](https://qiita.com/hi631/items/c19fe4a5f513d56b87ab)
+
 
 ＴＤ４ｘ４ 命令一覧
 
 	---------------+---------------+---------------------------------------------------------------
-	命令		ビット構成	動作
+	命令			ビット構成		動作
 	---------------+---------------+---------------------------------------------------------------
-	計算 Ra,Rb	0000CCCC	Ra <- RaとRb間で計算  CCCCC=
-					___ ADD SUB AND OR_ ^__ MUL SR_ EQU GT  GE  LT  LE  NE  NEG NOP
-			0010CCCC	(未定義)
-			00010xxx	(未定義)
-	LD  Rs,Rx	00m11000	m:条件=0:$18:SP -> A =1:$38:SP <- A
-	LD  Rx,Rx	00m11001	m:条件=0:$19:A -> B  =1:$39:A <- B
-	XAB Ra,Rb	00011010	$1A レジスタ交換 A <-> B
-			00m11xxx	
-	IN/OUT		00m11111	M:条件=0:Input($1F)  =1:Output($3F)
-	LD  Rx,Vx	01RVVVVV	$40+R+V Rx <- Vx  Rx=regA/B  Vx(変数)=regA/B,A-Z($1B)/%/&/*/_
-	ST  Vx,Rx	10RVVVVV	$80+R+V Vx <- Rx
-			1100000m	(未定義)
-	RTS		1100001b	$C2+b(0)
-	LDM Ra,(Ra)	1100010b	$C4+b メモリ読み出し　b:バイト数=0:1byte  =1:2byte
-	LDM (Ra),Rb	1100011b	$C6+b メモリ書き込み　
-	PE/PO (SP)	11001mxx	$C8+m regAと(SP+xx*2)でデータ交換　m:条件=0:Read  =1:Write
-	PUSH/POP Rx	1110mxxx	$Ex m:条件=0:$E0:POP  =1:$E8:PUSH xxx=0:regA 1:regB 2-7:A-F
-	JPx xxyy	1101JJJJ+xx+yy	$Dx 条件成立時ジャンプ　JJJJ=0($D0):JZ =1($D1)JNZ
-	JPx xxyy	11011JJJ+xx+yy	$Dx($D6/D7/F6/F7除外) 条件ジャンプ JJJ=0:$D8:JZ 1:$D9:JNZ
-			11111xxx+xx+yy	$Fx($D6/D7/F6/F7除外)
-	JSR		11011110+xx+yy	$D6/$DE
-	JMP		11111110+xx+yy	$F6/$FE
-	LDI Rx,xxyy	11R1b111+xx+yy	Rx <- #xxxx b:バイト数 =1:$DF/$FF(2byte) =0:$D7/$F7(1byte)
+	計算 Ra,Rb		0000CCCC		Ra <- RaとRb間で計算  CCCCC=
+									___ ADD SUB AND OR_ ^__ MUL SR_ EQU GT  GE  LT  LE  NE  NEG NOP
+					0010CCCC		(未定義)
+					00010xxx		(未定義)
+	LD  Rs,Rx		00m11000		m:条件=0:$18:SP -> A =1:$38:SP <- A
+	LD  Rx,Rx		00m11001		m:条件=0:$19:A -> B  =1:$39:A <- B
+	XAB Ra,Rb		00011010		$1A レジスタ交換 A <-> B
+					00m11xxx		
+	IN/OUT			00m11111		M:条件=0:Input($1F)  =1:Output($3F)
+	LD  Rx,Vx		01RVVVVV		$40+R+V Rx <- Vx  Rx=regA/B  Vx(変数)=regA/B,A-Z($1B)/%/&/*/_
+	ST  Vx,Rx		10RVVVVV		$80+R+V Vx <- Rx
+					1100000m		(未定義)
+	RTS				1100001b		$C2+b(0)
+	LDM Ra,(Ra)		1100010b		$C4+b メモリ読み出し　b:バイト数=0:1byte  =1:2byte
+	LDM (Ra),Rb		1100011b		$C6+b メモリ書き込み　
+	PE/PO (SP)		11001mxx		$C8+m regAと(SP+xx*2)でデータ交換　m:条件=0:Read  =1:Write
+	PUSH/POP Rx		1110mxxx		$Ex m:条件=0:$E0:POP  =1:$E8:PUSH xxx=0:regA 1:regB 2-7:A-F
+	JPx xxyy		1101JJJJ+xx+yy	$Dx 条件成立時ジャンプ　JJJJ=0($D0):JZ =1($D1)JNZ
+	JPx xxyy		11011JJJ+xx+yy	$Dx($D6/D7/F6/F7除外) 条件ジャンプ JJJ=0:$D8:JZ 1:$D9:JNZ
+					11111xxx+xx+yy	$Fx($D6/D7/F6/F7除外)
+	JSR				11011110+xx+yy	$D6/$DE
+	JMP				11111110+xx+yy	$F6/$FE
+	LDI Rx,xxyy		11R1b111+xx+yy	Rx <- #xxxx b:バイト数 =1:$DF/$FF(2byte) =0:$D7/$F7(1byte)
 	---------------+---------------+---------------------------------------------------------------
 
 
