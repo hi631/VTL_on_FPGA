@@ -73,8 +73,8 @@ module vga_disp(
 		if(iow && ioad[7:4]==4'h01) begin // IOaddr = $10-$1F
 			// VRAM/TRAMアクセス
 			case(ioad[3:0])
-				4'h0: tb_tfcol <= iowdt; // Set Text F.Color
-				4'h1: tb_tbcol <= iowdt; //          B.
+				4'h0: tb_tfcol <= iowdt; // Set Text F.Color(通常)
+				4'h1: tb_tbcol <= iowdt; //          B.     (反転)
 				4'h2: begin tb_waddr[10:0] <= iowdt[10:0]; end        // Set TMEM Addr
 				4'h3: begin tb_wdata <= iowdt[8:0]; tb_dreq <= 1; end // TMEM Write
 				4'h4: begin tb_wdata <= iowdt[8:0]; tb_wreq <= 1; end // TextBuf Write
@@ -221,12 +221,12 @@ module vga_disp(
 	always @(posedge clk25) begin 
 		if(cgdata[7-chdot[2:0]]==1 && cvdot[4]==0 && cvchr<5'd25) 
 			if(cgchr[8]==0) vga_cg <= tb_tfcol[7:0]; // フェアカラー
-			else            vga_cg <= tb_tfcol[15:8];
+			else            vga_cg <= tb_tbcol[7:0];
 		else begin 
 			if(cvdot[4:1]==4'h8 && chchr[6:0]==tb_xp[6:0] && cvstartp==tb_yp) 
 				  vga_cg <= 8'hff;    // カーソル
 			else 
-				if(cgchr[8]==0) vga_cg <= tb_tbcol[7:0]; // バックカラー
+				if(cgchr[8]==0) vga_cg <= tb_tfcol[15:8]; // バックカラー
 				else            vga_cg <= tb_tbcol[15:8];
 		end
 	end

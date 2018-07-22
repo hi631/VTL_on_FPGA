@@ -24,12 +24,18 @@
     <ClInclude Include="targetver.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="winwind.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="game86.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="winwind.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

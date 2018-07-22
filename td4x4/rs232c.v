@@ -8,7 +8,7 @@
 // -.-- 2018/7/02  受信制御を少し変更
 //******************************************************************************
 module rs232c(
-RESETB, CLK, TXD, RXD, TX_DATA, TX_DATA_EN, TX_BUSY, RX_DATA, RX_DATA_RD, RX_DATA_RDY);
+RESETB, CLK, TXD, RXD, TX_DATA, TX_DATA_EN, TX_BUSY, RX_DATA, RX_DATA_RD, RX_DATA_RDY,d_sig);
 //            PIN NAME         description        
 input         RESETB;         // power on reset    
 input         CLK;          // main clk          
@@ -21,6 +21,7 @@ output        TX_BUSY;        //tx busy
 output   [7:0]RX_DATA;        //rx data 8bit
 input         RX_DATA_RD;     //rx data read
 output        RX_DATA_RDY;     //rx data ready
+output        d_sig;
 //
         
 //parameter       p_bit_end_count    =12'd866; // 115.2Kbps clk=100.0MHz
@@ -141,7 +142,36 @@ always @(posedge CLK or negedge RESETB) begin
     else
       rx_data_tmp <= rx_data_tmp;
 end
-
+/* // バッファーモード
+// 受信データ読み取り処理
+reg  [7:0] rxdbf [0:7];
+reg  [2:0] rxbwct=0,rxbrct=0;
+reg RX_DATA_RDY=0;
+always @(posedge CLK or negedge RESETB) begin
+  if (RESETB==1'b0) begin RX_DATA <= 8'd0 ; RX_DATA_EN <= 1'b0; end
+  else begin
+    if ((rx_data_cnt == 17'd9)&&(rx_time_cnt == {1'b0,p_bit_end_count [11:1]}+12'd1))
+      begin rxdbf[rxbwct] <= rx_data_tmp ; rxbwct <= rxbwct + 1; end
+	 if(RX_DATA_RDY==0 && rxbwct!=rxbrct) begin
+	    RX_DATA <= rxdbf[rxbrct]; RX_DATA_RDY <= 1;
+	 end
+	 else
+	 if(RX_DATA_RD==1) begin rxbrct <= rxbrct + 1; RX_DATA_RDY <= 0; end
+  end
+end
+*/
+assign d_sig = d_en | d_rdy | d_rd;
+(* syn_Preserv = 1 *)reg d_en, d_rdy, d_rd;
+always @(posedge CLK ) begin
+	if(RX_DATA_RDY) d_rdy <= 1;
+	if(RX_DATA_RD ) d_rd  <= 1;
+	if(TX_DATA_EN ) d_en  <= 1;
+	if(rx_time_cnt[8:0]==0) begin
+		if(d_rdy) d_rdy <= 0;
+		if(d_rd ) d_rd  <= 0;
+		if(d_en ) d_en  <= 0;
+	end
+end
 //  受信データ転送   
 always @(posedge CLK or negedge RESETB) begin
   if (RESETB==1'b0) begin RX_DATA <= 8'd0 ; RX_DATA_EN <= 1'b0; end
@@ -151,10 +181,10 @@ always @(posedge CLK or negedge RESETB) begin
     else
       begin RX_DATA <= RX_DATA ; RX_DATA_EN <= 1'b0 ; end
 end
-
-// 受信データ読み取り処理
-reg RX_DATA_RDY=0;
-always @(posedge CLK) begin
+reg RX_DATA_RDY;
+always @(posedge CLK or negedge RESETB) begin
+    if (RESETB==1'b0) RX_DATA_RDY <= 0;
+	 else
     if(RX_DATA_EN) RX_DATA_RDY <= 1;
     else 
 	   if(RX_DATA_RD==1) RX_DATA_RDY <= 0; 

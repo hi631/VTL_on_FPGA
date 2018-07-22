@@ -28,7 +28,7 @@ module td4(
   wire [5:0] varno, calno;
   reg [5:0]  varnot;
   reg [3:0]  op_cycl, op_cyclm, op_cyofs, op_holdct; 
-  reg        setnop, op_bofs;
+  reg        setnop, setinp, op_bofs;
   
   reg [31:0] sd_addr;
   reg [15:0] sd_data;
@@ -42,7 +42,7 @@ module td4(
   assign memadr = (memsel == 0) ? PC : (memsel == 1) ? MP : //
                   (memsel == 2) ? SP : (memsel == 7) ? PC : //
                   0;
-  assign memout = (setnop!=0) ? 8'h0F :ramout[7:0]; // JMPの最後にNOP($0F)を挿入
+  assign memout = (setnop==1) ? 8'h0F : (setinp==1) ? 8'h1f : ramout[7:0]; // JMPの最後にNOP($0F)を挿入
   assign prgout = (op_holdct==0) ? memout : op_hold;
   assign opsel = prgout[7:6];
   assign regno = prgout[5];
@@ -70,12 +70,13 @@ always @(posedge CLOCK) begin
 
   if(RESET==1) 
     begin PC <= 0; op_cycl <= 0; memsel <= 0; mwe <= 0; op_cyclm <= 7; 
-    setnop <= 0; op_cyofs <= 0; op_holdct <= 0; op_bofs <= 0; end
+    setnop <= 0; setinp <= 0; op_cyofs <= 0; op_holdct <= 0; op_bofs <= 0; end
   else 
   begin
-  if(opsel != 2'b11) PC <= PC + 1;
+  //if(opsel != 2'b11) PC <= PC + 1;
   case(opsel[1:0])
     2'b00: begin
+      PC <= PC + 1;
       if(varno[4]==0) regx[regno] <= ALU; // 計算結果の代入
       else 
         if(varno[3]==0) // LD Rc
@@ -94,7 +95,8 @@ always @(posedge CLOCK) begin
 		        
 				  3'b111: 
                 if(regno==0) begin             // Ra <- Input 
-						ior <= 1;
+						//if(setinp==0) ior <= 1;
+						ior <= 1;ioad <= regx[1][7:0];
 						case(regx[1][7:0])
 							8'd0: begin
 								if(rxrdy) begin regx[0] <= {8'd0, rxdata}; srxreq  <= 1; end // シリアル入力
@@ -103,10 +105,13 @@ always @(posedge CLOCK) begin
 							8'd1: begin regx[0] <= {15'd0, rxrdy | ps2_rdy}; end
 							8'd2: begin regx[0] <= {15'd0,txbusy}; end
 							8'd3: begin regx[0] <= {8'd0,IN[7:0]}; end
-							default: regx[0] <= iordt;
+							default: // EX.Input 
+								// 命令を2回実行し、2回目(iorの立下り)でDataRead
+								if(setinp==0) begin PC <= PC; setinp <= 1; end
+								else          begin setinp <= 0; regx[0] <= iordt; end
 						endcase
-					end else begin                       // Output <- Ra
-						OUT <= regx[0][7:0]; // Dumy OUT
+					end else begin                  // Output <- Ra
+						OUT <= regx[0][7:0]; // Dumy OUT(LED)
 						iowdt <= regx[0]; ioad <= regx[1][7:0]; iow <= 1; // EX.Output
 						case(regx[1][7:0])
 							8'd0: begin 

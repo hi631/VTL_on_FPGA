@@ -47,6 +47,7 @@ assign acd_out = siftin==0 ? acd :
 
 	reg [27:0] div1msc=0;
 	(* syn_Preserv = 1 *)reg       pwon=0;
+	wire   reset;
 	assign reset = reseti | ~pwon;
 	always @(posedge clk) begin // PowerON時のキーを抑制(2s)
 		if(div1msc==28'd100000000) begin pwon <= 1; end
@@ -112,8 +113,10 @@ assign acd_out = siftin==0 ? acd :
 							8'h49: acd <= 8'h2E; // .
 							8'h4A: acd <= 8'h2F; // /
 							8'h51: acd <= 8'h5C; // \
+							8'h29: acd <= 8'h20; // " "
 							8'h5A: acd <= 8'h0D; // RET
 							8'h66: acd <= 8'h08; // BS
+							8'h76: acd <= 8'h1b; // ESC
 							default: acd <= 8'h00;
 						endcase
 						acd_rdy <= 1;

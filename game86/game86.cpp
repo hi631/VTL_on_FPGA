@@ -14,6 +14,11 @@
 #include <sys/types.h>
 #include <setjmp.h>
 
+extern void win_init(int mode);
+extern void win_ref();
+extern void SetPixel(int x, int y, DWORD col);
+extern void SetPixelB(int x, int y, int colb);
+extern void s3d();
 
 #define u_char unsigned char
 #define u_int unsigned int
@@ -534,6 +539,29 @@ void do_prNum(int c1)
 	}
 	xputs(buf);
 }
+int win_initf = 0, pixelx, pixely;
+void do_outp() {
+	int adr, dat, cc,i;
+	adr = term(*linpc++);
+	dat = operand();
+	//printf("[%d %d]",adr,dat);
+	switch (adr) {
+	case 0x14: for (i = 0; i < 255; i++) SetPixel(100,i,0x000000ff);break;
+		case 0x15: pixelx = dat; break;
+		case 0x16: pixely = dat; break;
+		case 0x17: 
+			//cc = (dat & 0xe0) | (dat & 0x1c) << 11 | (dat & 3) << 22;
+			//SetPixel(pixelx, pixely, cc); 
+			SetPixelB(pixelx, pixely, dat); 
+			break;
+		case 0x1f: 
+			if(dat==0) win_ref();
+			else
+			if (win_initf == 0) { win_init(1); win_initf = 1;	}
+			else win_init(0);
+			break;
+		}
+}
 int xkeychk() {
 	long n=1;
 	//	ioctl(0, FIONREAD, &n);
@@ -572,6 +600,7 @@ int do_cmd() {
 	case '\\':	mach_fin(); /**/
 	case '*': while (*linpc != 0) linpc++; return 0;
 	case '[': do_optcmd(); return 0;
+	case '<': do_outp(); return 0;
 	}
 
 	if (c1 == '='){
@@ -942,12 +971,13 @@ void do_optcmd(){
 	default:xputs("command not.found\n"); break;
 	}
 }
-
 void main() {
 	int rcd,lwk;
 	mach_init();
 	set_page_init(1); set_page_init(0); texttop = (int)text_buf;
-	//VARA('A') = TOPP;
+	//win_init();
+	//SetPixel(100, 100, 0x000000ff);
+	//s3d();
 
 	crlf(); xputs("--- VTL_on_FPGA Interpreter ---\n");
 	sp = -1;
@@ -956,7 +986,7 @@ void main() {
 		if (*linbf == '\0') { rcd = setjmp(toplvl); lwk = lno;  lno = 0; *linbf = '\0'; }
 		//if (rcd==0) strcpy(lin, "[p0 [lo t.gm [p1 [lo gm80.gm #=1");
 		if (rcd > 1) brkcheck(lwk,rcd);
-		crlf(); xputs("G>>"); 
+		crlf(); xputs("G>");
 		//xxgets(linbf);
 		gets_s(linbf);
 		//crlf();

@@ -1,3 +1,4 @@
+set_global_assignment -name RESERVE_DATA0_AFTER_CONFIGURATION "USE AS REGULAR IO"
 # -------------------------------------------------------------------------- #
 #
 # Copyright (C) 1991-2011 Altera Corporation
@@ -49,7 +50,6 @@ set_global_assignment -name DEVICE_FILTER_PACKAGE TQFP
 set_global_assignment -name DEVICE_FILTER_PIN_COUNT 144
 set_global_assignment -name DEVICE_FILTER_SPEED_GRADE 8
 set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR 1
-set_global_assignment -name NOMINAL_CORE_SUPPLY_VOLTAGE 1.2V
 set_global_assignment -name STRATIX_DEVICE_IO_STANDARD "2.5 V"
 set_location_assignment PIN_91 -to clk_50M
 set_location_assignment PIN_24 -to BTN[1]
@@ -74,6 +74,10 @@ set_location_assignment PIN_121 -to VGA_R[1]
 set_location_assignment PIN_120 -to VGA_R[0]
 set_location_assignment PIN_133 -to VGA_HS
 set_location_assignment PIN_132 -to VGA_VS
+set_location_assignment PIN_6 -to ASDO
+set_location_assignment PIN_13 -to DATA0
+set_location_assignment PIN_12 -to DCLK
+set_location_assignment PIN_8 -to NCS0
 set_location_assignment PIN_60 -to SDRAM_ADDR[12]
 set_location_assignment PIN_64 -to SDRAM_ADDR[11]
 set_location_assignment PIN_76 -to SDRAM_ADDR[10]
@@ -123,8 +127,24 @@ set_location_assignment PIN_135 -to stx
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_global_assignment -name ENABLE_OCT_DONE OFF
+set_global_assignment -name STRATIXV_CONFIGURATION_SCHEME "PASSIVE SERIAL"
+set_global_assignment -name USE_CONFIGURATION_DEVICE OFF
+set_global_assignment -name CRC_ERROR_OPEN_DRAIN OFF
+set_global_assignment -name RESERVE_DCLK_AFTER_CONFIGURATION "USE AS REGULAR IO"
+set_global_assignment -name OUTPUT_IO_TIMING_NEAR_END_VMEAS "HALF VCCIO" -rise
+set_global_assignment -name OUTPUT_IO_TIMING_NEAR_END_VMEAS "HALF VCCIO" -fall
+set_global_assignment -name OUTPUT_IO_TIMING_FAR_END_VMEAS "HALF SIGNAL SWING" -rise
+set_global_assignment -name OUTPUT_IO_TIMING_FAR_END_VMEAS "HALF SIGNAL SWING" -fall
+set_global_assignment -name ENABLE_CONFIGURATION_PINS OFF
+set_global_assignment -name ENABLE_BOOT_SEL_PIN OFF
+set_global_assignment -name CYCLONEIII_CONFIGURATION_DEVICE AUTO
+set_global_assignment -name CYCLONEII_RESERVE_NCEO_AFTER_CONFIGURATION "USE AS REGULAR IO"
+set_global_assignment -name RESERVE_DATA1_AFTER_CONFIGURATION "USE AS REGULAR IO"
+set_global_assignment -name RESERVE_FLASH_NCE_AFTER_CONFIGURATION "USE AS REGULAR IO"
 set_global_assignment -name VERILOG_FILE td4x4.v
 set_global_assignment -name QIP_FILE IP/cgen.qip
+set_global_assignment -name VERILOG_FILE spiif.v
 set_global_assignment -name VERILOG_FILE td4.v
 set_global_assignment -name VERILOG_FILE rs232c.v
 set_global_assignment -name VERILOG_FILE ps2_rx.v

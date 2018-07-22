@@ -8,6 +8,8 @@ module td4x4(
    input              srx,        // RS232C
    output             stx,
 	input wire         ps2_data, ps2_clk, // PS2 Keyboard
+	output wire        NCS0, DCLK, ASDO,
+	input wire         DATA0,
    output wire [7:0]  LED,
    input  wire [2:0]  BTN,
    // SDRAM
@@ -24,14 +26,20 @@ module td4x4(
    output wire        SDRAM_CKE  // SDRAM Clock Enable
    );
 
-	wire [7:0] tdled,vgaled;
-	assign LED[7:0] = tdled | vgaled;
+	wire [7:0] epcsled,tdled,vgaled;
+	assign LED[7:0] = epcsled | tdled | vgaled;
 	// TD4
 	wire [7:0]  ioad;	wire [15:0] iowdt; wire [15:0] iordt; wire ior,iow; // td4 I/O
-	//reg  [7:0]  ioad;	reg  [15:0] iowdt; reg  [15:0] iordt;reg ior,iow; // For Debug
 	td4 td4( .CLOCK(clk50),.RESET(reset), .IN({5'd0,BTN[2:0]}), .OUT(tdled),
 				.srx(srx), .stx(stx), .ps2d( ps2_data), .ps2c( ps2_clk),
 				.ioad(ioad), .iowdt(iowdt), .iordt(iordt), .ior(ior), .iow(iow));
+
+	epcsrw epcsrw(	
+	.clk50(clk50), .reset(reset),
+	.ioad(ioad), .iowdt(iowdt), .iordt(iordt), .ior(ior), .iow(iow),
+	.DCLK(DCLK), .NCS0(NCS0), .ASDO(ASDO), .DATA0(DATA0),
+	.led(epcsled)
+);
 
 	vga_disp vga_disp(
 	//.clk_50M(clk_50M),
@@ -75,3 +83,4 @@ module td4x4(
 	end
 
 endmodule
+
